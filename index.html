@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wet Bulb Temperature Widget</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .widget-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .widget-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .widget-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .widget-body {
+            padding: 32px 24px;
+        }
+
+        .main-display {
+            text-align: center;
+            padding: 32px 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .wet-bulb-value {
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 8px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .wet-bulb-unit {
+            font-size: 32px;
+            opacity: 0.9;
+        }
+
+        .safety-level {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+            margin-top: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .current-conditions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .condition-card {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .condition-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .condition-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .recommendations {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .recommendations h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #212529;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            font-size: 14px;
+            color: #495057;
+            line-height: 1.5;
+        }
+
+        .recommendations li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .activity-selector {
+            margin-bottom: 24px;
+        }
+
+        .activity-selector label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+
+        .activity-selector select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .activity-selector select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .location-info {
+            text-align: center;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .location-info strong {
+            color: #212529;
+            font-size: 16px;
+        }
+
+        .location-info small {
+            display: block;
+            color: #6c757d;
+            margin-top: 4px;
+            font-size: 12px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .loading:after {
+            content: "...";
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: "."; }
+            40% { content: ".."; }
+            60%, 100% { content: "..."; }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 12px;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Safety level colors */
+        .level-safe {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .level-caution {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .level-warning {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        }
+
+        .level-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .level-extreme {
+            background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);
+        }
+
+        @media (max-width: 480px) {
+            .wet-bulb-value {
+                font-size: 56px;
+            }
+
+            .current-conditions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="widget-header">
+            <h1>🌡️ Wet Bulb Temperature</h1>
+            <p>Heat safety at a glance</p>
+        </div>
+
+        <div class="widget-body">
+            <div id="loading" class="loading">
+                Loading your local weather
+            </div>
+
+            <div id="error" class="error" style="display: none;"></div>
+
+            <div id="widget-content" style="display: none;">
+                <div class="location-info">
+                    <strong id="location-name">--</strong>
+                    <small id="location-coords">--</small>
+                </div>
+
+                <div class="main-display" id="main-display">
+                    <div class="wet-bulb-value">
+                        <span id="wet-bulb-temp">--</span><span class="wet-bulb-unit">°C</span>
+                    </div>
+                    <div class="safety-level" id="safety-level">--</div>
+                </div>
+
+                <div class="current-conditions">
+                    <div class="condition-card">
+                        <div class="condition-label">Temperature</div>
+                        <div class="condition-value"><span id="dry-temp">--</span>°C</div>
+                    </div>
+                    <div class="condition-card">
+                        <div class="condition-label">Humidity</div>
+                        <div class="condition-value"><span id="humidity">--</span>%</div>
+                    </div>
+                </div>
+
+                <div class="activity-selector">
+                    <label for="activity-level">Activity Level:</label>
+                    <select id="activity-level" onchange="updateRecommendations()">
+                        <option value="rest">Rest / Indoor</option>
+                        <option value="light">Light Activity</option>
+                        <option value="moderate">Moderate Activity</option>
+                        <option value="intense">Intense Exertion</option>
+                    </select>
+                </div>
+
+                <div class="recommendations">
+                    <h3>Safety Recommendations</h3>
+                    <ul id="recommendations-list">
+                        <li>Loading recommendations...</li>
+                    </ul>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh</button>
+                    <button class="btn btn-secondary" onclick="toggleUnit()">°F / °C</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Wet Bulb Temperature combines heat and humidity for accurate heat safety assessment.</p>
+            <p style="margin-top: 8px; opacity: 0.7;">Data from Open-Meteo • Updated <span id="last-update">--</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let currentData = null;
+        let useFahrenheit = false;
+        let userLocation = null;
+
+        // Wet Bulb Temperature Calculation using Stull (2011) formula
+        // This is scientifically validated for temperatures between -20°C and 50°C
+        // and relative humidity between 5% and 99%
+        function calculateWetBulbTemp(tempCelsius, relativeHumidity) {
+            const T = tempCelsius;
+            const RH = relativeHumidity;
+
+            // Stull (2011) formula
+            const Tw = T * Math.atan(0.151977 * Math.sqrt(RH + 8.313659))
+                     + Math.atan(T + RH)
+                     - Math.atan(RH - 1.676331)
+                     + 0.00391838 * Math.pow(RH, 3/2) * Math.atan(0.023101 * RH)
+                     - 4.686035;
+
+            return Tw;
+        }
+
+        // Convert Celsius to Fahrenheit
+        function celsiusToFahrenheit(celsius) {
+            return (celsius * 9/5) + 32;
+        }
+
+        // Convert Fahrenheit to Celsius
+        function fahrenheitToCelsius(fahrenheit) {
+            return (fahrenheit - 32) * 5/9;
+        }
+
+        // Determine safety level based on wet bulb temperature and activity
+        function getSafetyLevel(wetBulbCelsius, activityLevel = 'rest') {
+            // Activity-based threshold adjustments (in Celsius)
+            const adjustments = {
+                'rest': 0,
+                'light': -2,
+                'moderate': -4,
+                'intense': -6
+            };
+
+            const adjustment = adjustments[activityLevel] || 0;
+            const adjustedWBT = wetBulbCelsius - adjustment;
+
+            // Thresholds in Celsius
+            if (adjustedWBT < 21) {
+                return { level: 'safe', label: 'Safe', class: 'level-safe' };
+            } else if (adjustedWBT < 26) {
+                return { level: 'caution', label: 'Caution', class: 'level-caution' };
+            } else if (adjustedWBT < 30) {
+                return { level: 'warning', label: 'Warning', class: 'level-warning' };
+            } else if (adjustedWBT < 32) {
+                return { level: 'danger', label: 'Danger', class: 'level-danger' };
+            } else {
+                return { level: 'extreme', label: 'Extreme Danger', class: 'level-extreme' };
+            }
+        }
+
+        // Get detailed recommendations based on safety level
+        function getRecommendations(safetyLevel, activityLevel) {
+            const recommendations = {
+                'safe': {
+                    'rest': [
+                        'Conditions are safe for normal activities',
+                        'No special precautions needed',
+                        'Stay hydrated as always'
+                    ],
+                    'light': [
+                        'Safe for light outdoor activities',
+                        'Normal hydration sufficient',
+                        'Enjoy your activities'
+                    ],
+                    'moderate': [
+                        'Safe for moderate exercise',
+                        'Stay hydrated during activity',
+                        'Take normal breaks'
+                    ],
+                    'intense': [
+                        'Safe for intense exercise',
+                        'Maintain good hydration',
+                        'Monitor how you feel'
+                    ]
+                },
+                'caution': {
+                    'rest': [
+                        'Generally safe but monitor your comfort',
+                        'Stay hydrated throughout the day',
+                        'Reduce prolonged intense outdoor exertion'
+                    ],
+                    'light': [
+                        'Light activities are manageable',
+                        'Increase water intake',
+                        'Take breaks in shade or AC'
+                    ],
+                    'moderate': [
+                        'Reduce intensity of outdoor activities',
+                        'Frequent hydration is important',
+                        'Take regular breaks in cool areas'
+                    ],
+                    'intense': [
+                        'Consider postponing intense outdoor exercise',
+                        'If exercising, reduce intensity significantly',
+                        'Hydrate before, during, and after activity'
+                    ]
+                },
+                'warning': {
+                    'rest': [
+                        'Limit time outdoors',
+                        'Stay in air-conditioned areas when possible',
+                        'Drink water regularly even if not thirsty',
+                        'Check on vulnerable individuals'
+                    ],
+                    'light': [
+                        'Limit outdoor activities to essential only',
+                        'Take frequent breaks indoors',
+                        'Increase fluid intake significantly',
+                        'Watch for signs of heat stress'
+                    ],
+                    'moderate': [
+                        'Avoid outdoor physical activities',
+                        'If activity necessary, take very frequent breaks',
+                        'Heavy hydration required',
+                        'Watch for heat exhaustion symptoms'
+                    ],
+                    'intense': [
+                        'Do not perform intense physical activity',
+                        'Postpone exercise to cooler conditions',
+                        'Serious heat illness risk',
+                        'Stay indoors in air conditioning'
+                    ]
+                },
+                'danger': {
+                    'rest': [
+                        'Dangerous conditions - minimize outdoor exposure',
+                        'Stay in air conditioning if possible',
+                        'Drink fluids continuously',
+                        'Never leave anyone in vehicles',
+                        'Seek immediate help if feeling unwell'
+                    ],
+                    'light': [
+                        'Do not perform outdoor activities',
+                        'Stay indoors with air conditioning',
+                        'High risk of heat-related illness',
+                        'Check on others frequently'
+                    ],
+                    'moderate': [
+                        'Extremely dangerous for any outdoor activity',
+                        'Heat stroke risk is very high',
+                        'Remain in air-conditioned spaces',
+                        'Seek medical help if symptoms appear'
+                    ],
+                    'intense': [
+                        'Life-threatening conditions for physical exertion',
+                        'Do not exercise under any circumstances',
+                        'Remain in climate-controlled environment',
+                        'Emergency services on alert'
+                    ]
+                },
+                'extreme': {
+                    'rest': [
+                        'EXTREME DANGER - Life-threatening conditions',
+                        'Minimize all outdoor exposure',
+                        'Ensure continuous air conditioning access',
+                        'Check on vulnerable people immediately',
+                        'Call emergency services if any symptoms'
+                    ],
+                    'light': [
+                        'EXTREME DANGER - Do not go outside',
+                        'Life-threatening heat conditions',
+                        'Stay in air-conditioned shelter',
+                        'This is an emergency situation'
+                    ],
+                    'moderate': [
+                        'EXTREME DANGER - Do not go outside',
+                        'Any activity carries severe risk',
+                        'Heat stroke likely without proper shelter',
+                        'Follow emergency protocols'
+                    ],
+                    'intense': [
+                        'EXTREME DANGER - Do not go outside',
+                        'Physical activity is potentially fatal',
+                        'Treat this as a heat emergency',
+                        'Seek cooling shelter immediately'
+                    ]
+                }
+            };
+
+            return recommendations[safetyLevel][activityLevel] || recommendations[safetyLevel]['rest'];
+        }
+
+        // Fetch weather data from Open-Meteo API (no API key needed!)
+        async function fetchWeatherData(latitude, longitude) {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m&temperature_unit=celsius`;
+
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Failed to fetch weather data');
+            }
+
+            const data = await response.json();
+            return {
+                temperature: data.current.temperature_2m,
+                humidity: data.current.relative_humidity_2m,
+                location: `${latitude.toFixed(2)}°, ${longitude.toFixed(2)}°`
+            };
+        }
+
+        // Get user's location
+        function getUserLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject(new Error('Geolocation is not supported by your browser'));
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        resolve({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                        });
+                    },
+                    (error) => {
+                        reject(new Error('Unable to retrieve your location'));
+                    }
+                );
+            });
+        }
+
+        // Update the display with current data
+        function updateDisplay() {
+            if (!currentData) return;
+
+            const activityLevel = document.getElementById('activity-level').value;
+            const wetBulbCelsius = currentData.wetBulbTemp;
+
+            // Convert temperatures if using Fahrenheit
+            const displayTemp = useFahrenheit ? celsiusToFahrenheit(currentData.temperature) : currentData.temperature;
+            const displayWetBulb = useFahrenheit ? celsiusToFahrenheit(wetBulbCelsius) : wetBulbCelsius;
+            const unit = useFahrenheit ? '°F' : '°C';
+
+            // Update temperature displays
+            document.getElementById('wet-bulb-temp').textContent = displayWetBulb.toFixed(1);
+            document.querySelectorAll('.wet-bulb-unit').forEach(el => el.textContent = unit);
+            document.getElementById('dry-temp').textContent = displayTemp.toFixed(1);
+            document.querySelectorAll('.condition-value').forEach((el, index) => {
+                if (index === 0) { // Temperature card
+                    el.innerHTML = `<span id="dry-temp">${displayTemp.toFixed(1)}</span>${unit}`;
+                }
+            });
+            document.getElementById('humidity').textContent = currentData.humidity.toFixed(0);
+
+            // Update safety level
+            const safety = getSafetyLevel(wetBulbCelsius, activityLevel);
+            const mainDisplay = document.getElementById('main-display');
+            mainDisplay.className = 'main-display ' + safety.class;
+            document.getElementById('safety-level').textContent = safety.label;
+
+            // Update recommendations
+            updateRecommendations();
+
+            // Update location
+            document.getElementById('location-name').textContent = currentData.location;
+            document.getElementById('location-coords').textContent =
+                `${userLocation.latitude.toFixed(4)}°, ${userLocation.longitude.toFixed(4)}°`;
+
+            // Update timestamp
+            const now = new Date();
+            document.getElementById('last-update').textContent = now.toLocaleTimeString();
+        }
+
+        // Update recommendations based on current safety level and activity
+        function updateRecommendations() {
+            if (!currentData) return;
+
+            const activityLevel = document.getElementById('activity-level').value;
+            const safety = getSafetyLevel(currentData.wetBulbTemp, activityLevel);
+            const recommendations = getRecommendations(safety.level, activityLevel);
+
+            const listElement = document.getElementById('recommendations-list');
+            listElement.innerHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
+        }
+
+        // Toggle between Fahrenheit and Celsius
+        function toggleUnit() {
+            useFahrenheit = !useFahrenheit;
+            updateDisplay();
+        }
+
+        // Refresh data
+        async function refreshData() {
+            try {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('widget-content').style.display = 'none';
+                document.getElementById('error').style.display = 'none';
+
+                await loadWeatherData();
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+
+        // Load weather data
+        async function loadWeatherData() {
+            try {
+                // Get user location
+                if (!userLocation) {
+                    userLocation = await getUserLocation();
+                }
+
+                // Fetch weather data
+                const weatherData = await fetchWeatherData(userLocation.latitude, userLocation.longitude);
+
+                // Calculate wet bulb temperature
+                const wetBulbTemp = calculateWetBulbTemp(weatherData.temperature, weatherData.humidity);
+
+                // Store current data
+                currentData = {
+                    temperature: weatherData.temperature,
+                    humidity: weatherData.humidity,
+                    wetBulbTemp: wetBulbTemp,
+                    location: weatherData.location
+                };
+
+                // Update display
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('widget-content').style.display = 'block';
+                updateDisplay();
+
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('widget-content').style.display = 'none';
+            const errorElement = document.getElementById('error');
+            errorElement.textContent = '⚠️ ' + message + '. Using default location (San Francisco) for demo.';
+            errorElement.style.display = 'block';
+
+            // Fall back to a default location for demo purposes
+            userLocation = { latitude: 37.7749, longitude: -122.4194 };
+            setTimeout(() => {
+                loadWeatherData();
+            }, 2000);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            loadWeatherData().catch(error => {
+                showError(error.message);
+            });
+        });
+    </script>
+</body>
+</html>
