@@ -1,4 +1,6 @@
 User: I was somewhat inspired to pursue this project after watching the Apple TV show Extrapolation which showed the imagined impacts of climate change in the near future. I think it was probably pretty highly overestimated such impacts, but one cool thing that stuck out to me was the use throughout the show of wet bulb temperature as a way for people to understand how dangerous outside temperatures were and possible precautions they should take. Is that reasonable? Is wet bulb useful? Would it hypothetically be more useful for human safety in a climate more impacted by global warming? Is it more useful than basic temperature in those respects? Or even possibly a “one simple” number to understand safe or dangerous conditions? Basically, I had the idea to create a widget for a phone screen or desktop to show wet bulb temperature and some color coded safety guidance at a glance. Would that be useful or am I over hyping it?
+
+
 Claude: Great question, and I think your intuition is mostly sound—wet bulb temperature (WBT) is genuinely more physiologically meaningful than dry bulb for assessing heat danger, but it’s not quite the “one simple number” holy grail. Let me break down where it shines and where it falls short.
 
 **Why WBT is useful:**
