@@ -10,6 +10,8 @@
 		42006EBA2EDBE5A7000F098D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42006EB92EDBE5A7000F098D /* WidgetKit.framework */; };
 		42006EBC2EDBE5A7000F098D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42006EBB2EDBE5A7000F098D /* SwiftUI.framework */; };
 		42006ECB2EDBE5A9000F098D /* WetBulbWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 42006EB72EDBE5A7000F098D /* WetBulbWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		42006EEE2EDBECB3000F098D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42006EB92EDBE5A7000F098D /* WidgetKit.framework */; };
+		42006EEF2EDBECB3000F098D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42006EBB2EDBE5A7000F098D /* SwiftUI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,8 @@
 		42006EB92EDBE5A7000F098D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		42006EBB2EDBE5A7000F098D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		42006EE72EDBE6D3000F098D /* WetBulbWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WetBulbWidgetExtension.entitlements; sourceTree = "<group>"; };
+		42006EED2EDBECB3000F098D /* WetBulbMacWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WetBulbMacWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		42006F152EDBF05E000F098D /* WetBulbMacWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WetBulbMacWidgetExtension.entitlements; sourceTree = "<group>"; };
 		4286BCFD2EDB875700019FB3 /* WetBulb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WetBulb.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -62,6 +66,7 @@
 		42006EE52EDBE678000F098D /* Exceptions for "WetBulb" folder in "WetBulbWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Extensions/Color+Platform.swift",
 				"Extensions/UserDefaults+Settings.swift",
 				Models/ActivityLevel.swift,
 				Models/SafetyLevel.swift,
@@ -71,6 +76,38 @@
 			);
 			target = 42006EB62EDBE5A7000F098D /* WetBulbWidgetExtension */;
 		};
+		42006EFA2EDBECB6000F098D /* Exceptions for "WetBulbMacWidget" folder in "WetBulbMacWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 42006EEC2EDBECB3000F098D /* WetBulbMacWidgetExtension */;
+		};
+		42006F082EDBED7C000F098D /* Exceptions for "WetBulb" folder in "WetBulbMacWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Extensions/Color+Platform.swift",
+				"Extensions/UserDefaults+Settings.swift",
+				Models/ActivityLevel.swift,
+				Models/SafetyLevel.swift,
+				Models/WeatherData.swift,
+				Services/WeatherService.swift,
+				Services/WetBulbCalculator.swift,
+			);
+			target = 42006EEC2EDBECB3000F098D /* WetBulbMacWidgetExtension */;
+		};
+		42006F0E2EDBEDCF000F098D /* Exceptions for "WetBulbWidget" folder in "WetBulbMacWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				LargeWidgetView.swift,
+				MediumWidgetView.swift,
+				SmallWidgetView.swift,
+				WetBulbWidget.swift,
+				WetBulbWidgetEntry.swift,
+				WetBulbWidgetProvider.swift,
+			);
+			target = 42006EEC2EDBECB3000F098D /* WetBulbMacWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -78,8 +115,17 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				42006ECF2EDBE5A9000F098D /* Exceptions for "WetBulbWidget" folder in "WetBulbWidgetExtension" target */,
+				42006F0E2EDBEDCF000F098D /* Exceptions for "WetBulbWidget" folder in "WetBulbMacWidgetExtension" target */,
 			);
 			path = WetBulbWidget;
+			sourceTree = "<group>";
+		};
+		42006EF02EDBECB3000F098D /* WetBulbMacWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				42006EFA2EDBECB6000F098D /* Exceptions for "WetBulbMacWidget" folder in "WetBulbMacWidgetExtension" target */,
+			);
+			path = WetBulbMacWidget;
 			sourceTree = "<group>";
 		};
 		4286BCFF2EDB875700019FB3 /* WetBulb */ = {
@@ -87,6 +133,7 @@
 			exceptions = (
 				42006E8B2EDB9265000F098D /* Exceptions for "WetBulb" folder in "WetBulb" target */,
 				42006EE52EDBE678000F098D /* Exceptions for "WetBulb" folder in "WetBulbWidgetExtension" target */,
+				42006F082EDBED7C000F098D /* Exceptions for "WetBulb" folder in "WetBulbMacWidgetExtension" target */,
 			);
 			path = WetBulb;
 			sourceTree = "<group>";
@@ -100,6 +147,15 @@
 			files = (
 				42006EBC2EDBE5A7000F098D /* SwiftUI.framework in Frameworks */,
 				42006EBA2EDBE5A7000F098D /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42006EEA2EDBECB3000F098D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42006EEF2EDBECB3000F098D /* SwiftUI.framework in Frameworks */,
+				42006EEE2EDBECB3000F098D /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,9 +181,11 @@
 		4286BCF42EDB875700019FB3 = {
 			isa = PBXGroup;
 			children = (
+				42006F152EDBF05E000F098D /* WetBulbMacWidgetExtension.entitlements */,
 				42006EE72EDBE6D3000F098D /* WetBulbWidgetExtension.entitlements */,
 				4286BCFF2EDB875700019FB3 /* WetBulb */,
 				42006EBD2EDBE5A7000F098D /* WetBulbWidget */,
+				42006EF02EDBECB3000F098D /* WetBulbMacWidget */,
 				42006EB82EDBE5A7000F098D /* Frameworks */,
 				4286BCFE2EDB875700019FB3 /* Products */,
 			);
@@ -138,6 +196,7 @@
 			children = (
 				4286BCFD2EDB875700019FB3 /* WetBulb.app */,
 				42006EB72EDBE5A7000F098D /* WetBulbWidgetExtension.appex */,
+				42006EED2EDBECB3000F098D /* WetBulbMacWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -165,6 +224,28 @@
 			);
 			productName = WetBulbWidgetExtension;
 			productReference = 42006EB72EDBE5A7000F098D /* WetBulbWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		42006EEC2EDBECB3000F098D /* WetBulbMacWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42006EFB2EDBECB6000F098D /* Build configuration list for PBXNativeTarget "WetBulbMacWidgetExtension" */;
+			buildPhases = (
+				42006EE92EDBECB3000F098D /* Sources */,
+				42006EEA2EDBECB3000F098D /* Frameworks */,
+				42006EEB2EDBECB3000F098D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				42006EF02EDBECB3000F098D /* WetBulbMacWidget */,
+			);
+			name = WetBulbMacWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = WetBulbMacWidgetExtension;
+			productReference = 42006EED2EDBECB3000F098D /* WetBulbMacWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		4286BCFC2EDB875700019FB3 /* WetBulb */ = {
@@ -204,6 +285,9 @@
 					42006EB62EDBE5A7000F098D = {
 						CreatedOnToolsVersion = 26.2;
 					};
+					42006EEC2EDBECB3000F098D = {
+						CreatedOnToolsVersion = 26.2;
+					};
 					4286BCFC2EDB875700019FB3 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -225,12 +309,20 @@
 			targets = (
 				4286BCFC2EDB875700019FB3 /* WetBulb */,
 				42006EB62EDBE5A7000F098D /* WetBulbWidgetExtension */,
+				42006EEC2EDBECB3000F098D /* WetBulbMacWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		42006EB52EDBE5A7000F098D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42006EEB2EDBECB3000F098D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -248,6 +340,13 @@
 
 /* Begin PBXSourcesBuildPhase section */
 		42006EB32EDBE5A7000F098D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42006EE92EDBECB3000F098D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -331,6 +430,76 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		42006EFC2EDBECB6000F098D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WetBulbMacWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Y5KRUX3GR;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WetBulbMacWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WetBulbMacWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joshuagilstrap.WetBulbMacWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		42006EFD2EDBECB6000F098D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WetBulbMacWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9Y5KRUX3GR;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WetBulbMacWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WetBulbMacWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.joshuagilstrap.WetBulbMacWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -535,6 +704,15 @@
 			buildConfigurations = (
 				42006ECD2EDBE5A9000F098D /* Debug */,
 				42006ECE2EDBE5A9000F098D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42006EFB2EDBECB6000F098D /* Build configuration list for PBXNativeTarget "WetBulbMacWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42006EFC2EDBECB6000F098D /* Debug */,
+				42006EFD2EDBECB6000F098D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

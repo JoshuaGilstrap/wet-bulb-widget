@@ -66,7 +66,7 @@ struct LargeWidgetView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
-                    .background(Color(.systemGray6))
+                    .background(Color.systemGray6)
                     .cornerRadius(8)
 
                     // Humidity
@@ -86,7 +86,7 @@ struct LargeWidgetView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
-                    .background(Color(.systemGray6))
+                    .background(Color.systemGray6)
                     .cornerRadius(8)
                 }
 
@@ -112,7 +112,7 @@ struct LargeWidgetView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(10)
-                .background(Color(.systemGray6))
+                .background(Color.systemGray6)
                 .cornerRadius(8)
             }
             .padding(12)
