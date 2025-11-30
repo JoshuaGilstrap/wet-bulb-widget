@@ -29,38 +29,38 @@ class AppSettings {
     /// Use Fahrenheit for temperature display (default: true)
     var useFahrenheit: Bool {
         get {
-            UserDefaults.standard.object(forKey: UserDefaults.Keys.temperatureUnit) as? Bool ?? true
+            UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.object(forKey: UserDefaults.Keys.temperatureUnit) as? Bool ?? true
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: UserDefaults.Keys.temperatureUnit)
+            UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.set(newValue, forKey: UserDefaults.Keys.temperatureUnit)
         }
     }
 
     /// Default activity level
     var defaultActivity: ActivityLevel {
         get {
-            if let rawValue = UserDefaults.standard.string(forKey: UserDefaults.Keys.defaultActivity),
+            if let rawValue = UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.string(forKey: UserDefaults.Keys.defaultActivity),
                let activity = ActivityLevel(rawValue: rawValue) {
                 return activity
             }
             return .rest
         }
         set {
-            UserDefaults.standard.set(newValue.rawValue, forKey: UserDefaults.Keys.defaultActivity)
+            UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.set(newValue.rawValue, forKey: UserDefaults.Keys.defaultActivity)
         }
     }
 
     /// Last known latitude for caching
     var lastKnownLatitude: Double? {
         get {
-            let value = UserDefaults.standard.double(forKey: UserDefaults.Keys.lastKnownLatitude)
+            let value = UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.double(forKey: UserDefaults.Keys.lastKnownLatitude)
             return value != 0 ? value : nil
         }
         set {
             if let value = newValue {
-                UserDefaults.standard.set(value, forKey: UserDefaults.Keys.lastKnownLatitude)
+                UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.set(value, forKey: UserDefaults.Keys.lastKnownLatitude)
             } else {
-                UserDefaults.standard.removeObject(forKey: UserDefaults.Keys.lastKnownLatitude)
+                UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.removeObject(forKey: UserDefaults.Keys.lastKnownLatitude)
             }
         }
     }
@@ -68,14 +68,14 @@ class AppSettings {
     /// Last known longitude for caching
     var lastKnownLongitude: Double? {
         get {
-            let value = UserDefaults.standard.double(forKey: UserDefaults.Keys.lastKnownLongitude)
+            let value = UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.double(forKey: UserDefaults.Keys.lastKnownLongitude)
             return value != 0 ? value : nil
         }
         set {
             if let value = newValue {
-                UserDefaults.standard.set(value, forKey: UserDefaults.Keys.lastKnownLongitude)
+                UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.set(value, forKey: UserDefaults.Keys.lastKnownLongitude)
             } else {
-                UserDefaults.standard.removeObject(forKey: UserDefaults.Keys.lastKnownLongitude)
+                UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.removeObject(forKey: UserDefaults.Keys.lastKnownLongitude)
             }
         }
     }
@@ -83,7 +83,7 @@ class AppSettings {
     /// Cached weather data
     var cachedWeatherData: WeatherData? {
         get {
-            guard let data = UserDefaults.standard.data(forKey: UserDefaults.Keys.cachedWeatherData) else {
+            guard let data = UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.data(forKey: UserDefaults.Keys.cachedWeatherData) else {
                 return nil
             }
             return try? JSONDecoder().decode(WeatherData.self, from: data)
@@ -91,9 +91,9 @@ class AppSettings {
         set {
             if let data = newValue,
                let encoded = try? JSONEncoder().encode(data) {
-                UserDefaults.standard.set(encoded, forKey: UserDefaults.Keys.cachedWeatherData)
+                UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.set(encoded, forKey: UserDefaults.Keys.cachedWeatherData)
             } else {
-                UserDefaults.standard.removeObject(forKey: UserDefaults.Keys.cachedWeatherData)
+                UserDefaults(suiteName: "group.com.joshuagilstrap.WetBulbWidget")!.removeObject(forKey: UserDefaults.Keys.cachedWeatherData)
             }
         }
     }
